@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat with Ashu</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Chat with Ashu 🤗</h1>
+    <div id="chat-box"></div>
+    <input type="text" id="user-input" placeholder="Say something..." />
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById("user-input");
+            const message = input.value;
+            input.value = "";
+
+            const res = await fetch("/chat", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({message})
+            });
+            const data = await res.json();
+            const chatBox = document.getElementById("chat-box");
+            chatBox.innerHTML += `<p><b>You:</b> ${message}</p>`;
+            chatBox.innerHTML += `<p><b>Ashu:</b> ${data.reply}</p>`;
+        }
+    </script>
+</body>
+</html>
